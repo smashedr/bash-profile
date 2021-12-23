@@ -1,4 +1,5 @@
 [[ -z "$PS1" ]] && return
+[[ -n "${_cssnr}" ]] && return
 
 if [[ $(id -u) = 0 ]];then
     if [[ -f "/usr/local/public/.prod" ]];then
@@ -217,6 +218,8 @@ function prod() {
             source "/etc/profile.d/cssnr.sh"
     fi
 }
+
+_cssnr="true"
 
 if [[ -r ~/.hostrc ]];then
     source ~/.hostrc;
