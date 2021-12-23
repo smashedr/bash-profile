@@ -84,8 +84,6 @@ alias dmcs='python manage.py createsuperuser'
 alias dmmm='python manage.py makemigrations'
 alias dmm='python manage.py migrate'
 
-alias python='/usr/bin/python3'
-
 function s() { sudo -E su -l; exit ; }
 
 function dexec() {
