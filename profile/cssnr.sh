@@ -30,7 +30,6 @@ export PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:$PATH
 export EDITOR='/usr/bin/vim'
 export LOGLEVEL=DEBUG
 
-
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
@@ -40,6 +39,7 @@ alias ls='ls --color=auto'
 alias ll='ls -Ahl --color=auto'
 alias la='ls -ahl --color=auto'
 
+alias g='glances'
 alias n='sudo nmap'
 alias p='ping'
 alias v='view'
@@ -52,10 +52,7 @@ alias scat='sudo cat'
 alias ccat="grep -v '^$\|^\s*\#'"
 alias cls="clear && printf '\e[3J'"
 alias cpd='cp -r'
-
-alias ssu='sudo -E su -m'
-alias sse='sudo -E'
-
+alias ssu='sudo -E su -l'
 alias listen='sudo ss -ltpn'
 alias sc='sudo systemctl --no-pager -l'
 
@@ -88,7 +85,7 @@ alias dmm='python manage.py migrate'
 
 alias python='/usr/bin/python3'
 
-function s() { sudo su - "$@"; exit ; }
+function s() { sudo -E su -l; exit ; }
 
 function dexec() {
     _id="$1";shift 1
@@ -122,7 +119,7 @@ function distro() {
 }
 
 function rand() {
-    [[ -n "$1" ]] && _L="$1" || _L="12"
+    [[ -n "$1" ]] && _L="$1" || _L="32"
     _T=(expr 0 + "${_L}")
     [[ "$?" != "0" ]] && return
     cat /dev/urandom | tr -dc 'A-Za-z0-9' | head -c ${_L}
@@ -144,8 +141,8 @@ function backup() {
     i="$(date +%m%d%H%M%S)";
     for s in "$@";
     do
-        d="$(basename $s)";
-        cp -rf ${s} ~/.backup/${d}_${i};
+        d=$(basename "$s");
+        cp -rf "${s}" "${HOME}/.backup/${d}_${i}";
     done
 }
 function trash() {
@@ -160,8 +157,8 @@ function trash() {
     i="$(date +%m%d%H%M%S)";
     for s in "$@";
     do
-        d="$(basename $s)";
-        mv -f ${s} ~/.trash/${d}_${i};
+        d=$(basename "$s");
+        mv -f "${s}" "${HOME}/.trash/${d}_${i}";
     done
 }
 
@@ -185,7 +182,7 @@ function venv2() {
     fi
     source "${_VENV}/bin/activate"
     python -m pip install --upgrade pip
-    [[ -f "${_RTXT}" ]] && python -m pip install -r "${_RTXT}"
+    [[ -f "${_RTXT}" ]] && python -m pip install -Ur "${_RTXT}"
 }
 function _venv3() {
     [[ -n "$1" ]] && _PYV="$1" || _PYV="python3"
@@ -199,11 +196,12 @@ function _venv3() {
     fi
     source "${_VENV}/bin/activate"
     python -m pip install --upgrade pip
-    [[ -f "${_RTXT}" ]] && python -m pip install -r "${_RTXT}"
+    [[ -f "${_RTXT}" ]] && python -m pip install -Ur "${_RTXT}"
 }
 alias venv3='_venv3 python3'
 alias venv36='_venv3 python3.6'
 alias venv38='_venv3 python3.8'
+alias venv39='_venv3 python3.9'
 
 function prod() {
     if [[ -f "/usr/local/public/.prod" ]];then
