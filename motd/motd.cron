@@ -1,0 +1,1 @@
+*/5 * * * * root nice -10 bash /etc/motd.sh >/dev/null 2>&1

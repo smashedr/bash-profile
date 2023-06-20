@@ -1,5 +1,4 @@
 [[ -z "$PS1" ]] && return
-[[ -n "${_cssnr}" ]] && return
 
 if [[ $(id -u) = 0 ]];then
     if [[ -f "/usr/local/public/.prod" ]];then
@@ -84,7 +83,7 @@ alias dmcs='python manage.py createsuperuser'
 alias dmmm='python manage.py makemigrations'
 alias dmm='python manage.py migrate'
 
-function s() { sudo -E su -l; exit ; }
+function s() { sudo -E su; }
 
 function dexec() {
     _id="$1";shift 1
@@ -217,14 +216,16 @@ function prod() {
     fi
 }
 
-_cssnr="true"
-
 if [[ -r ~/.hostrc ]];then
     source ~/.hostrc;
 fi
+
+[[ -n "${_cssnr}" ]] && return
 
 if [[ $(id -u) = 0 ]];then
     echo -e "\033[01;31mYou are logged in as the \"${USER}\" user. Please be careful!\033[00m"
 else
     echo -e "\033[01;32mYou are logged in as \"${USER}\". You can type \"s\" to become root.\033[00m"
 fi
+
+_cssnr="true"
